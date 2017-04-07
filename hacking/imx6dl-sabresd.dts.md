@@ -1,163 +1,169 @@
-/*
- * Copyright (C) 2013 Freescale Semiconductor, Inc.
- *
- * This program is free software; you can redistribute it and/or modify
- * it under the terms of the GNU General Public License version 2 as
- * published by the Free Software Foundation.
- */
+# i.MX6 imx6dl-sabresd.dts hacking
 
-/dts-v1/;
+## 原文解析
 
-#include "imx6dl.dtsi"
-#include "imx6qdl-sabresd.dtsi"
+* dts版本说明。
 
-/ {
-    /**
-     * 在描述compatible属性之前要先描述model属性，model属性指明了该设备属于哪个设备生产商
-     * compatible属性值是string list，定义了一系列的model，每一个string是一个model
-     * 对于root node，compatible属性是用来匹配machine type的，对于普通的HW block的节点，例如
-     * interrupt-controller，compatible属性是用来匹配适合的driver的。
-     */
-	model = "Freescale i.MX6 DualLite SABRE Smart Device Board";
-	compatible = "fsl,imx6dl-sabresd", "fsl,imx6dl";
-}
-#if 0
-/**
- * 这里相当于引用在别处定义的label，然后修改、增加属性。
- */
-&battery {
-	offset-charger = <1485>;
-	offset-discharger = <1464>;
-	offset-usb-charger = <1285>;
-};
-#endif
-#if 0
-&iomuxc {
-        epdc {
-                pinctrl_epdc_0: epdcgrp-0 {
-                        fsl,pins = <
-                                MX6QDL_PAD_EIM_A16__EPDC_DATA00    0x80000000
-                                MX6QDL_PAD_EIM_DA10__EPDC_DATA01   0x80000000
-                                MX6QDL_PAD_EIM_DA12__EPDC_DATA02   0x80000000
-                                MX6QDL_PAD_EIM_DA11__EPDC_DATA03   0x80000000
-                                MX6QDL_PAD_EIM_LBA__EPDC_DATA04    0x80000000
-                                MX6QDL_PAD_EIM_EB2__EPDC_DATA05    0x80000000
-                                MX6QDL_PAD_EIM_CS0__EPDC_DATA06    0x80000000
-                                MX6QDL_PAD_EIM_RW__EPDC_DATA07     0x80000000
-                                MX6QDL_PAD_EIM_A21__EPDC_GDCLK     0x80000000
-                                MX6QDL_PAD_EIM_A22__EPDC_GDSP      0x80000000
-                                MX6QDL_PAD_EIM_A23__EPDC_GDOE      0x80000000
-                                MX6QDL_PAD_EIM_A24__EPDC_GDRL      0x80000000
-                                MX6QDL_PAD_EIM_D31__EPDC_SDCLK_P   0x80000000
-                                MX6QDL_PAD_EIM_D27__EPDC_SDOE      0x80000000
-                                MX6QDL_PAD_EIM_DA1__EPDC_SDLE      0x80000000
-                                MX6QDL_PAD_EIM_EB1__EPDC_SDSHR     0x80000000
-                                MX6QDL_PAD_EIM_DA2__EPDC_BDR0      0x80000000
-                                MX6QDL_PAD_EIM_DA4__EPDC_SDCE0     0x80000000
-                                MX6QDL_PAD_EIM_DA5__EPDC_SDCE1     0x80000000
-                                MX6QDL_PAD_EIM_DA6__EPDC_SDCE2     0x80000000
-                        >;
-                };
-        };
-};
+```
+    /dts-v1/;
+```
 
-&epdc {
-        pinctrl-names = "default";
-        pinctrl-0 = <&pinctrl_epdc_0>;
-        V3P3-supply = <&V3P3_reg>;
-        VCOM-supply = <&VCOM_reg>;
-        DISPLAY-supply = <&DISPLAY_reg>;
-        status = "okay";
-};
-#endif
-#if 0
-&i2c3 {
-        max17135@48 {
-                compatible = "maxim,max17135";
-                reg = <0x48>;
-                vneg_pwrup = <1>;
-                gvee_pwrup = <1>;
-                vpos_pwrup = <2>;
-                gvdd_pwrup = <1>;
-                gvdd_pwrdn = <1>;
-                vpos_pwrdn = <2>;
-                gvee_pwrdn = <1>;
-                vneg_pwrdn = <1>;
-                SENSOR-supply = <&reg_sensor>;
-                gpio_pmic_pwrgood = <&gpio2 21 0>;
-                gpio_pmic_vcom_ctrl = <&gpio3 17 0>;
-                gpio_pmic_wakeup = <&gpio3 20 0>;
-                gpio_pmic_v3p3 = <&gpio2 20 0>;
-                gpio_pmic_intr = <&gpio2 25 0>;
+* 加载imx6dl.dtsi、imx6qdl-sabresd.dtsi文件。
 
-                regulators {
-                        DISPLAY_reg: DISPLAY {
-                                regulator-name = "DISPLAY";
-                        };
+```
+    #include "imx6dl.dtsi"
+    #include "imx6qdl-sabresd.dtsi"
+```
+* 描述compatible、model属性，model属性指明了该设备属于哪个设备生产商，compatible属性值是string list，定义了一系列的model，每一个string是一个model，对于root node，compatible属性是用来匹配machine type的，对于普通的HW block的节点，例如interrupt-controller，compatible属性是用来匹配适合的driver的。  
 
-                        GVDD_reg: GVDD {
-                                /* 20v */
-                                regulator-name = "GVDD";
-                        };
+```
+    / {
+    	model = "Freescale i.MX6 DualLite SABRE Smart Device Board";
+    	compatible = "fsl,imx6dl-sabresd", "fsl,imx6dl";
+    }
+```
 
-                        GVEE_reg: GVEE {
-                                /* -22v */
-                                regulator-name = "GVEE";
-                        };
+* label前面加&符号，相当于引用别处定义好的节点，在这里可以修改、增加属性
+* `#if ...#endif`用法和在C语言中的用法是一致的；
+* fsl,pins属性说明请参考：[Documentation/devicetree/bindings/pinctrl/fsl,imx-pinctrl.txt](http://lxr.free-electrons.com/source/Documentation/devicetree/bindings/pinctrl/fsl,imx-pinctrl.txt)
+* pingctrl-names、pinctrl-0属性说明请参考：[Documentation/devicetree/bindings/pinctrl/pinctrl-bindings.txt](http://lxr.free-electrons.com/source/Documentation/devicetree/bindings/pinctrl/pinctrl-bindings.txt)
 
-                        HVINN_reg: HVINN {
-                                /* -22v */
-                                regulator-name = "HVINN";
-                        };
-
-                        HVINP_reg: HVINP {
-                                /* 20v */
-                                regulator-name = "HVINP";
-                        };
-
-                        VCOM_reg: VCOM {
-                                regulator-name = "VCOM";
-                                /* 2's-compliment, -4325000 */
-                                regulator-min-microvolt = <0xffbe0178>;
-                                /* 2's-compliment, -500000 */
-                                regulator-max-microvolt = <0xfff85ee0>;
-                        };
-
-                        VNEG_reg: VNEG {
-                                /* -15v */
-                                regulator-name = "VNEG";
-                        };
-
-                        VPOS_reg: VPOS {
-                                /* 15v */
-                                regulator-name = "VPOS";
-                        };
-
-                        V3P3_reg: V3P3 {
-                                regulator-name = "V3P3";
-                        };
-                };
-        };
-};
-#endif
-&ldb {
-	lvds-channel@0 {
-		crtc = "ipu1-di0";
-	};
-
-	lvds-channel@1 {
-		crtc = "ipu1-di1";
-	};
-};
-
-&mxcfb1 {
-	status = "okay";
-};
-
-&mxcfb2 {
-	status = "okay";
-};
-
-&pxp {
-	status = "okay";
-};
+```
+    #if 0
+    &battery {
+    	offset-charger = <1485>;
+    	offset-discharger = <1464>;
+    	offset-usb-charger = <1285>;
+    };
+    #endif
+    #if 0
+    &iomuxc {
+            epdc {
+                    pinctrl_epdc_0: epdcgrp-0 {
+                            fsl,pins = <
+                                    MX6QDL_PAD_EIM_A16__EPDC_DATA00    0x80000000
+                                    MX6QDL_PAD_EIM_DA10__EPDC_DATA01   0x80000000
+                                    MX6QDL_PAD_EIM_DA12__EPDC_DATA02   0x80000000
+                                    MX6QDL_PAD_EIM_DA11__EPDC_DATA03   0x80000000
+                                    MX6QDL_PAD_EIM_LBA__EPDC_DATA04    0x80000000
+                                    MX6QDL_PAD_EIM_EB2__EPDC_DATA05    0x80000000
+                                    MX6QDL_PAD_EIM_CS0__EPDC_DATA06    0x80000000
+                                    MX6QDL_PAD_EIM_RW__EPDC_DATA07     0x80000000
+                                    MX6QDL_PAD_EIM_A21__EPDC_GDCLK     0x80000000
+                                    MX6QDL_PAD_EIM_A22__EPDC_GDSP      0x80000000
+                                    MX6QDL_PAD_EIM_A23__EPDC_GDOE      0x80000000
+                                    MX6QDL_PAD_EIM_A24__EPDC_GDRL      0x80000000
+                                    MX6QDL_PAD_EIM_D31__EPDC_SDCLK_P   0x80000000
+                                    MX6QDL_PAD_EIM_D27__EPDC_SDOE      0x80000000
+                                    MX6QDL_PAD_EIM_DA1__EPDC_SDLE      0x80000000
+                                    MX6QDL_PAD_EIM_EB1__EPDC_SDSHR     0x80000000
+                                    MX6QDL_PAD_EIM_DA2__EPDC_BDR0      0x80000000
+                                    MX6QDL_PAD_EIM_DA4__EPDC_SDCE0     0x80000000
+                                    MX6QDL_PAD_EIM_DA5__EPDC_SDCE1     0x80000000
+                                    MX6QDL_PAD_EIM_DA6__EPDC_SDCE2     0x80000000
+                            >;
+                    };
+            };
+    };
+    
+    &epdc {
+            pinctrl-names = "default";
+            pinctrl-0 = <&pinctrl_epdc_0>;
+            V3P3-supply = <&V3P3_reg>;
+            VCOM-supply = <&VCOM_reg>;
+            DISPLAY-supply = <&DISPLAY_reg>;
+            status = "okay";
+    };
+    #endif
+    #if 0
+    &i2c3 {
+            max17135@48 {
+                    compatible = "maxim,max17135";
+                    reg = <0x48>;
+                    vneg_pwrup = <1>;
+                    gvee_pwrup = <1>;
+                    vpos_pwrup = <2>;
+                    gvdd_pwrup = <1>;
+                    gvdd_pwrdn = <1>;
+                    vpos_pwrdn = <2>;
+                    gvee_pwrdn = <1>;
+                    vneg_pwrdn = <1>;
+                    SENSOR-supply = <&reg_sensor>;
+                    gpio_pmic_pwrgood = <&gpio2 21 0>;
+                    gpio_pmic_vcom_ctrl = <&gpio3 17 0>;
+                    gpio_pmic_wakeup = <&gpio3 20 0>;
+                    gpio_pmic_v3p3 = <&gpio2 20 0>;
+                    gpio_pmic_intr = <&gpio2 25 0>;
+    
+                    regulators {
+                            DISPLAY_reg: DISPLAY {
+                                    regulator-name = "DISPLAY";
+                            };
+    
+                            GVDD_reg: GVDD {
+                                    /* 20v */
+                                    regulator-name = "GVDD";
+                            };
+    
+                            GVEE_reg: GVEE {
+                                    /* -22v */
+                                    regulator-name = "GVEE";
+                            };
+    
+                            HVINN_reg: HVINN {
+                                    /* -22v */
+                                    regulator-name = "HVINN";
+                            };
+    
+                            HVINP_reg: HVINP {
+                                    /* 20v */
+                                    regulator-name = "HVINP";
+                            };
+    
+                            VCOM_reg: VCOM {
+                                    regulator-name = "VCOM";
+                                    /* 2's-compliment, -4325000 */
+                                    regulator-min-microvolt = <0xffbe0178>;
+                                    /* 2's-compliment, -500000 */
+                                    regulator-max-microvolt = <0xfff85ee0>;
+                            };
+    
+                            VNEG_reg: VNEG {
+                                    /* -15v */
+                                    regulator-name = "VNEG";
+                            };
+    
+                            VPOS_reg: VPOS {
+                                    /* 15v */
+                                    regulator-name = "VPOS";
+                            };
+    
+                            V3P3_reg: V3P3 {
+                                    regulator-name = "V3P3";
+                            };
+                    };
+            };
+    };
+    #endif
+    &ldb {
+    	lvds-channel@0 {
+    		crtc = "ipu1-di0";
+    	};
+    
+    	lvds-channel@1 {
+    		crtc = "ipu1-di1";
+    	};
+    };
+    
+    &mxcfb1 {
+    	status = "okay";
+    };
+    
+    &mxcfb2 {
+    	status = "okay";
+    };
+    
+    &pxp {
+    	status = "okay";
+    };
+```
