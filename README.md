@@ -1,4 +1,4 @@
-# Linux设备树学习笔记
+# Linux设备树(dts)学习笔记
 
 ## 一、参考文档：
 
@@ -11,16 +11,16 @@
 ## 二、文件依赖关系
 
 * kernel_imx/arch/arm/boot/dts/:
-  * imx6dl-sabresd.dts:
-    * #include "imx6dl.dtsi"
-      * #include <dt-bindings/interrupt-controller/irq.h>
-      * #include "imx6dl-pinfunc.h"
-      * #include "imx6qdl.dtsi"
-        * #include <dt-bindings/clock/imx6qdl-clock.h>
-        * #include <dt-bindings/gpio/gpio.h>
-        * #include "skeleton.dtsi"
-    * #include "imx6qdl-sabresd.dtsi"
-      * #include <dt-bindings/input/input.h>
+  * [imx6dl-sabresd.dts](imx6dl-sabresd.dts)
+    * [imx6dl.dtsi](imx6dl.dtsi)
+      * dt-bindings/interrupt-controller/irq.h
+      * [imx6dl-pinfunc.h](imx6dl-pinfunc.h)
+      * [imx6qdl.dtsi](imx6qdl.dtsi)
+        * dt-bindings/clock/imx6qdl-clock.h
+        * dt-bindings/gpio/gpio.h
+        * [skeleton.dtsi](skeleton.dtsi)
+    * [imx6qdl-sabresd.dtsi](imx6qdl-sabresd.dts)
+      * dt-bindings/input/input.h
 
 ## 三、依赖文件说明
 
@@ -34,7 +34,7 @@
 ### 3.2 imx6dl.dtsi
 
 * 描述了2个CPU的信息；
-* 其soc节点描述了IMX6SDLRM.pdf文档中213也，ARM Platform Memory Map中相关设备信息；
+* 其soc节点描述了IMX6SDLRM.pdf文档中213页，ARM Platform Memory Map中相关设备信息；
 
 ### 3.3 imx6qdl.dtsi
 
@@ -48,6 +48,7 @@
 
 ## 四、Code Hacking
 
-跟踪源代码的时候采用Linux 3.14.52版本内核，属于Android 5.1的内核源代码。
+跟踪的源代码采用Linux 3.14.52版本内核，属于Android 5.1的内核源代码，这部分主要是为了能够深入的理解设备树的原理。
 
 * [i.MX6 dts gpio-keys hacking](hacking/gpio-keys.md)
+* [i.MX6 dts leds-keys hacking](hacking/leds-gpio.md)

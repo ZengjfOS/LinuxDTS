@@ -1,10 +1,13 @@
 # i.MX6 dts gpio-keys hacking
 
-跟踪代码的目的如下：
-* 了解设备中GPIO口的控制器是怎么注册的；
-* 了解GPIO要怎么指定；
-* 了解gpio-keys怎么注册设备；
-* 了解gpio-keys怎么获取设备树中属性；
+* 参考文档：
+  * [解析gpio-keys（kernel-4.7）](http://blog.csdn.net/viewsky11/article/details/53488904)
+* 跟踪代码的目的如下：
+  * 了解设备中GPIO口的控制器是怎么注册的；
+  * 了解GPIO要怎么指定；
+  * 了解gpio-keys怎么注册设备；
+  * 了解gpio-keys怎么获取设备树中属性；
+* gpio-keys源代码：drivers/input/keyboard/gpio_keys.c
 
 ## 设备树跟踪
 * GPIO控制器注册(imx6qdl.dtsi)： 
@@ -89,6 +92,7 @@
 	};
 ```
 * 重新命名(imx6qdl.dtsi)
+
 ```
 	aliases {
 		gpio0 = &gpio1;
@@ -147,6 +151,7 @@
 ```
 
 ## gpio-key Linux driver跟踪
+
 ```
     late_initcall(gpio_keys_init);     --------------+
     module_exit(gpio_keys_exit);                     |
