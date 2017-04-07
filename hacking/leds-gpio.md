@@ -7,6 +7,7 @@
 ## 设备树跟踪
 
 * leds-gpio设备注册(imx6qdl-sabresd.dtsi)
+  * [Documentation/devicetree/bindings/leds/leds-gpio.txt](http://lxr.free-electrons.com/source/Documentation/devicetree/bindings/leds/leds-gpio.txt)
 
 ```
     ...
@@ -41,6 +42,7 @@
 ```
 
 ## leds-gpio驱动跟踪
+  * drivers/leds/leds-gpio.c
 
 ```
     module_platform_driver(gpio_led_driver);     ----------------+
@@ -128,7 +130,7 @@
             // 获取设备树上的触发属性                                               |
             led.default_trigger =                                                   |
                 of_get_property(child, "linux,default-trigger", NULL);              |
-            // 获取设备树上的默认状态
+            // 获取设备树上的默认状态                                               |
             state = of_get_property(child, "default-state", NULL);                  |
             if (state) {                                                            |
                 if (!strcmp(state, "keep"))                                         |
@@ -139,7 +141,7 @@
                     led.default_state = LEDS_GPIO_DEFSTATE_OFF;                     |
             }                                                                       |
                                                                                     |
-            // 获取设备树上的节点状态
+            // 获取设备树上的节点状态                                               |
             if (of_get_property(child, "retain-state-suspended", NULL))             |
                 led.retain_state_suspended = 1;                                     |
                                                                                     |
@@ -264,4 +266,4 @@
         return 0;
     }
     EXPORT_SYMBOL_GPL(led_classdev_register);
-    ```
+```
