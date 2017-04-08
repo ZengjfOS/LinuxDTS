@@ -7,6 +7,7 @@
 * [Device Tree（二）：基本概念](http://www.wowotech.net/device_model/dt_basic_concept.html)
 * [i.MX6 Device Tree customization](https://boundarydevices.com/mx6-device-tree-customization/)
 * [linux DTS　分析](http://blog.csdn.net/xmzzy2012/article/details/49514951)
+* [\[dts\]DTS实例分析](http://www.cnblogs.com/aaronLinux/p/5551441.html)
 
 ## 二、i.MX6DL设备树文件依赖关系
 
