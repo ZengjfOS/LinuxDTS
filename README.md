@@ -8,6 +8,7 @@
 * [i.MX6 Device Tree customization](https://boundarydevices.com/mx6-device-tree-customization/)
 * [linux DTS　分析](http://blog.csdn.net/xmzzy2012/article/details/49514951)
 * [\[dts\]DTS实例分析](http://www.cnblogs.com/aaronLinux/p/5551441.html)
+* [DTS file explanation - aliases](https://stackoverflow.com/questions/17738709/dts-file-explanation-aliases)：别名是为了快速查找，不是真的换名字；
 
 ## 二、i.MX6DL设备树文件依赖关系
 
